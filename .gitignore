@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignorar configurações locais
+/src/main/resources/config-local.properties
+
