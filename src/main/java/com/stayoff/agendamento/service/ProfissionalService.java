@@ -3,15 +3,13 @@ package com.stayoff.agendamento.service;
 import com.stayoff.agendamento.dto.entrada.ProfissionalDTO;
 import com.stayoff.agendamento.dto.resposta.ProfissionalResponseDTO;
 import com.stayoff.agendamento.dto.paged.ProfissionalPagedDTO;
+import com.stayoff.agendamento.exception.ResourceNotFoundException;
 import com.stayoff.agendamento.model.Empresa;
 import com.stayoff.agendamento.model.Profissional;
 import com.stayoff.agendamento.model.Servico;
 import com.stayoff.agendamento.repository.ProfissionalRepository;
 import com.stayoff.agendamento.repository.ServicoRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,7 +50,7 @@ public class ProfissionalService {
     // Buscar por id
     public ProfissionalResponseDTO findById(Integer id) {
         Profissional profissional = profissionalRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Profissional não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Profissional não encontrado com id: " + id));
         return mapToResponseDTO(profissional);
     }
 
@@ -62,8 +60,10 @@ public class ProfissionalService {
         profissional.setNome(dto.nome());
         profissional.setEmpresa(empresa);
 
-
         List<Servico> servicos = servicoRepository.findAllById(dto.servicoIds());
+        if (servicos.size() != dto.servicoIds().size()) {
+            throw new ResourceNotFoundException("Um ou mais serviços informados não foram encontrados.");
+        }
         profissional.setServicos(servicos);
 
         Profissional saved = profissionalRepository.save(profissional);
@@ -73,12 +73,14 @@ public class ProfissionalService {
     // Atualizar
     public ProfissionalResponseDTO update(Integer id, ProfissionalDTO dto) {
         Profissional profissional = profissionalRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Profissional não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Profissional não encontrado com id: " + id));
 
         profissional.setNome(dto.nome());
 
-
         List<Servico> servicos = servicoRepository.findAllById(dto.servicoIds());
+        if (servicos.size() != dto.servicoIds().size()) {
+            throw new ResourceNotFoundException("Um ou mais serviços informados não foram encontrados.");
+        }
         profissional.setServicos(servicos);
 
         Profissional updated = profissionalRepository.save(profissional);
@@ -87,6 +89,9 @@ public class ProfissionalService {
 
     // Deletar
     public void delete(Integer id) {
+        if (!profissionalRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Profissional não encontrado com id: " + id);
+        }
         profissionalRepository.deleteById(id);
     }
 

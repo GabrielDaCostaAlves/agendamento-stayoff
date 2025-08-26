@@ -3,12 +3,10 @@ package com.stayoff.agendamento.service;
 import com.stayoff.agendamento.dto.entrada.EmpresaDTO;
 import com.stayoff.agendamento.dto.resposta.EmpresaResponseDTO;
 import com.stayoff.agendamento.dto.paged.EmpresaPagedDTO;
+import com.stayoff.agendamento.exception.ResourceNotFoundException;
 import com.stayoff.agendamento.model.Empresa;
 import com.stayoff.agendamento.repository.EmpresaRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -47,7 +45,7 @@ public class EmpresaService {
     // Buscar por id
     public EmpresaResponseDTO findById(Long id) {
         Empresa empresa = empresaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Empresa não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Empresa não encontrada com id: " + id));
         return mapToResponseDTO(empresa);
     }
 
@@ -69,7 +67,7 @@ public class EmpresaService {
     // Atualizar
     public EmpresaResponseDTO update(Long id, EmpresaDTO dto) {
         Empresa empresa = empresaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Empresa não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Empresa não encontrada com id: " + id));
 
         empresa.setNome(dto.nome());
         empresa.setEmail(dto.email());
@@ -84,6 +82,9 @@ public class EmpresaService {
 
     // Deletar
     public void delete(Long id) {
+        if (!empresaRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Empresa não encontrada com id: " + id);
+        }
         empresaRepository.deleteById(id);
     }
 

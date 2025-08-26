@@ -2,6 +2,7 @@ package com.stayoff.agendamento.service;
 
 import com.stayoff.agendamento.dto.entrada.DiaDisponivelDTO;
 import com.stayoff.agendamento.dto.resposta.DiaDisponivelResponseDTO;
+import com.stayoff.agendamento.exception.ResourceNotFoundException;
 import com.stayoff.agendamento.model.DiaDisponivel;
 import com.stayoff.agendamento.model.Empresa;
 import com.stayoff.agendamento.model.Profissional;
@@ -35,14 +36,14 @@ public class DiaDisponivelService {
     // Buscar por ID
     public DiaDisponivelResponseDTO findById(Integer id) {
         DiaDisponivel dia = diaDisponivelRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("DiaDisponivel não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("DiaDisponivel não encontrado com id: " + id));
         return mapToResponseDTO(dia);
     }
 
     // Criar
     public DiaDisponivelResponseDTO save(DiaDisponivelDTO dto, Empresa empresa) {
         Profissional profissional = profissionalRepository.findById(dto.profissionalId())
-                .orElseThrow(() -> new RuntimeException("Profissional não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Profissional não encontrado com id: " + dto.profissionalId()));
 
         DiaDisponivel diaDisponivel = new DiaDisponivel();
         diaDisponivel.setEmpresa(empresa);
@@ -51,16 +52,15 @@ public class DiaDisponivelService {
 
         DiaDisponivel saved = diaDisponivelRepository.save(diaDisponivel);
         return mapToResponseDTO(saved);
-
     }
 
     // Atualizar
     public DiaDisponivelResponseDTO update(Integer id, DiaDisponivelDTO dto) {
         DiaDisponivel diaDisponivel = diaDisponivelRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("DiaDisponivel não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("DiaDisponivel não encontrado com id: " + id));
 
         Profissional profissional = profissionalRepository.findById(dto.profissionalId())
-                .orElseThrow(() -> new RuntimeException("Profissional não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Profissional não encontrado com id: " + dto.profissionalId()));
 
         diaDisponivel.setProfissional(profissional);
         diaDisponivel.setDia(dto.dia());
@@ -71,6 +71,9 @@ public class DiaDisponivelService {
 
     // Deletar
     public void delete(Integer id) {
+        if (!diaDisponivelRepository.existsById(id)) {
+            throw new ResourceNotFoundException("DiaDisponivel não encontrado com id: " + id);
+        }
         diaDisponivelRepository.deleteById(id);
     }
 

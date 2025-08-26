@@ -3,6 +3,7 @@ package com.stayoff.agendamento.service;
 import com.stayoff.agendamento.dto.entrada.BlocoDisponibilidadeDTO;
 import com.stayoff.agendamento.dto.resposta.BlocoDisponibilidadeResponseDTO;
 import com.stayoff.agendamento.dto.paged.BlocoDisponibilidadePagedDTO;
+import com.stayoff.agendamento.exception.ResourceNotFoundException;
 import com.stayoff.agendamento.model.BlocoDisponibilidade;
 import com.stayoff.agendamento.model.DiaDisponivel;
 import com.stayoff.agendamento.repository.BlocoDisponibilidadeRepository;
@@ -54,14 +55,14 @@ public class BlocoDisponibilidadeService {
     // Buscar por id
     public BlocoDisponibilidadeResponseDTO findById(Integer id) {
         BlocoDisponibilidade bloco = blocoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Bloco de disponibilidade não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Bloco de disponibilidade não encontrado com id: " + id));
         return mapToResponseDTO(bloco);
     }
 
     // Criar
     public BlocoDisponibilidadeResponseDTO save(BlocoDisponibilidadeDTO dto) {
         DiaDisponivel dia = diaRepository.findById(dto.diaDisponivelId())
-                .orElseThrow(() -> new RuntimeException("DiaDisponivel não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("DiaDisponivel não encontrado com id: " + dto.diaDisponivelId()));
 
         BlocoDisponibilidade bloco = new BlocoDisponibilidade();
         bloco.setDiaDisponivel(dia);
@@ -76,10 +77,10 @@ public class BlocoDisponibilidadeService {
     // Atualizar
     public BlocoDisponibilidadeResponseDTO update(Integer id, BlocoDisponibilidadeDTO dto) {
         BlocoDisponibilidade bloco = blocoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Bloco de disponibilidade não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Bloco de disponibilidade não encontrado com id: " + id));
 
         DiaDisponivel dia = diaRepository.findById(dto.diaDisponivelId())
-                .orElseThrow(() -> new RuntimeException("DiaDisponivel não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("DiaDisponivel não encontrado com id: " + dto.diaDisponivelId()));
 
         bloco.setDiaDisponivel(dia);
         bloco.setEmpresa(dia.getEmpresa());
@@ -92,7 +93,9 @@ public class BlocoDisponibilidadeService {
 
     // Deletar
     public void delete(Integer id) {
-        blocoRepository.deleteById(id);
+        BlocoDisponibilidade bloco = blocoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Bloco de disponibilidade não encontrado com id: " + id));
+        blocoRepository.delete(bloco);
     }
 
     // Mapper interno

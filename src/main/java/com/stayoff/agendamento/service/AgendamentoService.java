@@ -3,6 +3,7 @@ package com.stayoff.agendamento.service;
 import com.stayoff.agendamento.dto.entrada.AgendamentoDTO;
 import com.stayoff.agendamento.dto.resposta.AgendamentoResponseDTO;
 import com.stayoff.agendamento.dto.paged.AgendamentoPagedDTO;
+import com.stayoff.agendamento.exception.ResourceNotFoundException;
 import com.stayoff.agendamento.model.Agendamento;
 import com.stayoff.agendamento.model.Cliente;
 import com.stayoff.agendamento.model.Profissional;
@@ -65,16 +66,16 @@ public class AgendamentoService {
     // Buscar por id
     public AgendamentoResponseDTO findById(Integer id) {
         Agendamento agendamento = agendamentoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Agendamento não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado com id: " + id));
         return mapToResponseDTO(agendamento);
     }
 
     // Criar
     public AgendamentoResponseDTO save(AgendamentoDTO dto) {
         Cliente cliente = clienteRepository.findById(dto.clienteId())
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado com id: " + dto.clienteId()));
         Profissional profissional = profissionalRepository.findById(dto.profissionalId())
-                .orElseThrow(() -> new RuntimeException("Profissional não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Profissional não encontrado com id: " + dto.profissionalId()));
         List<Servico> servicos = servicoRepository.findAllById(dto.servicoIds());
 
         Agendamento agendamento = new Agendamento();
@@ -96,12 +97,12 @@ public class AgendamentoService {
     // Atualizar
     public AgendamentoResponseDTO update(Integer id, AgendamentoDTO dto) {
         Agendamento agendamento = agendamentoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Agendamento não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado com id: " + id));
 
         Cliente cliente = clienteRepository.findById(dto.clienteId())
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado com id: " + dto.clienteId()));
         Profissional profissional = profissionalRepository.findById(dto.profissionalId())
-                .orElseThrow(() -> new RuntimeException("Profissional não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Profissional não encontrado com id: " + dto.profissionalId()));
         List<Servico> servicos = servicoRepository.findAllById(dto.servicoIds());
 
         agendamento.setCliente(cliente);
@@ -120,7 +121,9 @@ public class AgendamentoService {
 
     // Deletar
     public void delete(Integer id) {
-        agendamentoRepository.deleteById(id);
+        Agendamento agendamento = agendamentoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado com id: " + id));
+        agendamentoRepository.delete(agendamento);
     }
 
     // Mapper interno

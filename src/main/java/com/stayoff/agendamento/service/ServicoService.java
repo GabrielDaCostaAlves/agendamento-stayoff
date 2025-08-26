@@ -3,13 +3,11 @@ package com.stayoff.agendamento.service;
 import com.stayoff.agendamento.dto.entrada.ServicoDTO;
 import com.stayoff.agendamento.dto.resposta.ServicoResponseDTO;
 import com.stayoff.agendamento.dto.paged.ServicoPagedDTO;
+import com.stayoff.agendamento.exception.ResourceNotFoundException;
 import com.stayoff.agendamento.model.Empresa;
 import com.stayoff.agendamento.model.Servico;
 import com.stayoff.agendamento.repository.ServicoRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
@@ -47,7 +45,7 @@ public class ServicoService {
     // Buscar por id
     public ServicoResponseDTO findById(Integer id) {
         Servico servico = servicoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Serviço não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado com id: " + id));
         return mapToResponseDTO(servico);
     }
 
@@ -68,7 +66,7 @@ public class ServicoService {
     // Atualizar
     public ServicoResponseDTO update(Integer id, ServicoDTO dto) {
         Servico servico = servicoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Serviço não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado com id: " + id));
 
         servico.setNome(dto.nome());
         servico.setDescricao(dto.descricao());
@@ -82,6 +80,9 @@ public class ServicoService {
 
     // Deletar
     public void delete(Integer id) {
+        if (!servicoRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Serviço não encontrado com id: " + id);
+        }
         servicoRepository.deleteById(id);
     }
 

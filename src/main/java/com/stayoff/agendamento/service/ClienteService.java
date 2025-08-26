@@ -3,6 +3,7 @@ package com.stayoff.agendamento.service;
 import com.stayoff.agendamento.dto.entrada.ClienteDTO;
 import com.stayoff.agendamento.dto.resposta.ClienteResponseDTO;
 import com.stayoff.agendamento.dto.paged.ClientePagedDTO;
+import com.stayoff.agendamento.exception.ResourceNotFoundException;
 import com.stayoff.agendamento.model.Cliente;
 import com.stayoff.agendamento.model.Empresa;
 import com.stayoff.agendamento.repository.ClienteRepository;
@@ -47,7 +48,7 @@ public class ClienteService {
     // Buscar por id
     public ClienteResponseDTO findById(Integer id) {
         Cliente cliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado com id: " + id));
         return mapToResponseDTO(cliente);
     }
 
@@ -68,7 +69,7 @@ public class ClienteService {
     // Atualizar
     public ClienteResponseDTO update(Integer id, ClienteDTO dto) {
         Cliente cliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado com id: " + id));
 
         cliente.setNome(dto.nome());
         cliente.setEmail(dto.email());
@@ -81,7 +82,9 @@ public class ClienteService {
 
     // Deletar
     public void delete(Integer id) {
-        clienteRepository.deleteById(id);
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado com id: " + id));
+        clienteRepository.delete(cliente);
     }
 
     // Mapper interno

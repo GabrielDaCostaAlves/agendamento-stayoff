@@ -2,6 +2,7 @@ package com.stayoff.agendamento.service;
 
 import com.stayoff.agendamento.dto.entrada.ConfiguracaoDTO;
 import com.stayoff.agendamento.dto.resposta.ConfiguracaoResponseDTO;
+import com.stayoff.agendamento.exception.ResourceNotFoundException;
 import com.stayoff.agendamento.model.Configuracao;
 import com.stayoff.agendamento.model.Empresa;
 import com.stayoff.agendamento.repository.ConfiguracaoRepository;
@@ -20,7 +21,7 @@ public class ConfiguracaoService {
     public ConfiguracaoResponseDTO findByEmpresa(Empresa empresa) {
         Configuracao configuracao = configuracaoRepository
                 .findByEmpresa(empresa)
-                .orElseThrow(() -> new RuntimeException("Configuração não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Configuração não encontrada para a empresa: " + empresa.getId()));
         return mapToResponseDTO(configuracao);
     }
 
