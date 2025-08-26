@@ -1,7 +1,7 @@
 package com.stayoff.agendamento.service;
 
-import com.stayoff.agendamento.dto.DiaDisponivelDTO;
-import com.stayoff.agendamento.dto.DiaDisponivelResponseDTO;
+import com.stayoff.agendamento.dto.entrada.DiaDisponivelDTO;
+import com.stayoff.agendamento.dto.resposta.DiaDisponivelResponseDTO;
 import com.stayoff.agendamento.model.DiaDisponivel;
 import com.stayoff.agendamento.model.Empresa;
 import com.stayoff.agendamento.model.Profissional;

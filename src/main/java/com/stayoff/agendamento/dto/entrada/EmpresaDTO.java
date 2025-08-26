@@ -1,10 +1,9 @@
-package com.stayoff.agendamento.dto;
+package com.stayoff.agendamento.dto.entrada;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record ClienteDTO(
-
+public record EmpresaDTO(
         @NotBlank(message = "Nome é obrigatório")
         @Size(max = 255)
         String nome,
@@ -16,7 +15,11 @@ public record ClienteDTO(
         @Size(max = 50)
         String telefone,
 
-        @NotBlank(message = "Senha é obrigatória")
-        String senha
+        @Size(max = 500)
+        String endereco,
+
+        @Size(max = 100)
+        String subdominio
+
 
 ) {}

@@ -1,4 +1,4 @@
-package com.stayoff.agendamento.dto;
+package com.stayoff.agendamento.dto.resposta;
 
 import java.time.LocalDateTime;
 import java.util.List;

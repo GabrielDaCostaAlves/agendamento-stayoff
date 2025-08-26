@@ -1,5 +1,5 @@
 
-package com.stayoff.agendamento.dto;
+package com.stayoff.agendamento.dto.resposta;
 
 public record EmpresaResponseDTO(
         String nome,

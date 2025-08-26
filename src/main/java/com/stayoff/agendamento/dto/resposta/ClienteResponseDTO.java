@@ -1,4 +1,4 @@
-package com.stayoff.agendamento.dto;
+package com.stayoff.agendamento.dto.resposta;
 
 public record ClienteResponseDTO(
         Integer id,

@@ -1,8 +1,8 @@
 package com.stayoff.agendamento.service;
 
-import com.stayoff.agendamento.dto.AgendamentoDTO;
-import com.stayoff.agendamento.dto.AgendamentoResponseDTO;
-import com.stayoff.agendamento.dto.AgendamentoPagedDTO;
+import com.stayoff.agendamento.dto.entrada.AgendamentoDTO;
+import com.stayoff.agendamento.dto.resposta.AgendamentoResponseDTO;
+import com.stayoff.agendamento.dto.paged.AgendamentoPagedDTO;
 import com.stayoff.agendamento.model.Agendamento;
 import com.stayoff.agendamento.model.Cliente;
 import com.stayoff.agendamento.model.Profissional;

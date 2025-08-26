@@ -1,4 +1,6 @@
-package com.stayoff.agendamento.dto;
+package com.stayoff.agendamento.dto.paged;
+
+import com.stayoff.agendamento.dto.resposta.DiaDisponivelResponseDTO;
 
 import java.util.List;
 

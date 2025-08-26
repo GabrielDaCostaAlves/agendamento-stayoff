@@ -1,4 +1,4 @@
-package com.stayoff.agendamento.dto;
+package com.stayoff.agendamento.dto.entrada;
 
 import java.time.LocalDate;
 

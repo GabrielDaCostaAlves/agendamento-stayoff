@@ -1,4 +1,4 @@
-package com.stayoff.agendamento.dto;
+package com.stayoff.agendamento.dto.entrada;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

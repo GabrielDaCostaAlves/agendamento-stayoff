@@ -1,8 +1,8 @@
 package com.stayoff.agendamento.service;
 
-import com.stayoff.agendamento.dto.BlocoDisponibilidadeDTO;
-import com.stayoff.agendamento.dto.BlocoDisponibilidadeResponseDTO;
-import com.stayoff.agendamento.dto.BlocoDisponibilidadePagedDTO;
+import com.stayoff.agendamento.dto.entrada.BlocoDisponibilidadeDTO;
+import com.stayoff.agendamento.dto.resposta.BlocoDisponibilidadeResponseDTO;
+import com.stayoff.agendamento.dto.paged.BlocoDisponibilidadePagedDTO;
 import com.stayoff.agendamento.model.BlocoDisponibilidade;
 import com.stayoff.agendamento.model.DiaDisponivel;
 import com.stayoff.agendamento.repository.BlocoDisponibilidadeRepository;

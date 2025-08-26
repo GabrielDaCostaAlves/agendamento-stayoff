@@ -1,8 +1,8 @@
 package com.stayoff.agendamento.service;
 
-import com.stayoff.agendamento.dto.EmpresaDTO;
-import com.stayoff.agendamento.dto.EmpresaResponseDTO;
-import com.stayoff.agendamento.dto.EmpresaPagedDTO;
+import com.stayoff.agendamento.dto.entrada.EmpresaDTO;
+import com.stayoff.agendamento.dto.resposta.EmpresaResponseDTO;
+import com.stayoff.agendamento.dto.paged.EmpresaPagedDTO;
 import com.stayoff.agendamento.model.Empresa;
 import com.stayoff.agendamento.repository.EmpresaRepository;
 import org.springframework.data.domain.Page;
