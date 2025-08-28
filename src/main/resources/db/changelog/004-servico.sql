@@ -2,7 +2,7 @@
 
 --changeset gabriel:004
 CREATE TABLE servico (
-    id INT PRIMARY KEY,
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
     empresa_id BIGINT NOT NULL,
     nome VARCHAR(255) NOT NULL,
     descricao TEXT,

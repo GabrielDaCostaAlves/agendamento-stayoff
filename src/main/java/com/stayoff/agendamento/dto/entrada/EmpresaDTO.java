@@ -19,7 +19,10 @@ public record EmpresaDTO(
         String endereco,
 
         @Size(max = 100)
-        String subdominio
+        String subdominio,
+
+        @NotBlank(message = "Senha é obrigatória")
+        String senha
 
 
 ) {}

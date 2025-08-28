@@ -91,7 +91,6 @@ public class ClienteService {
     private ClienteResponseDTO mapToResponseDTO(Cliente cliente) {
         return new ClienteResponseDTO(
                 cliente.getId(),
-                cliente.getEmpresa().getId().intValue(),
                 cliente.getNome(),
                 cliente.getEmail(),
                 cliente.getTelefone()

@@ -49,14 +49,23 @@ public class EmpresaService {
         return mapToResponseDTO(empresa);
     }
 
+    public Empresa findEmpresaById(Long id) {
+        Empresa empresa = empresaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Empresa não encontrada com id: " + id));
+        return empresa;
+    }
+
     // Criar
     public EmpresaResponseDTO save(EmpresaDTO dto) {
         Empresa empresa = new Empresa();
+
+
         empresa.setNome(dto.nome());
         empresa.setEmail(dto.email());
         empresa.setTelefone(dto.telefone());
         empresa.setEndereco(dto.endereco());
         empresa.setSubdominio(dto.subdominio());
+        empresa.setSenha(dto.senha());
         empresa.setDataCriacao(LocalDateTime.now());
         empresa.setAtivo(true);
 

@@ -2,7 +2,7 @@
 
 --changeset gabriel:001
 CREATE TABLE empresa (
-    id BIGINT PRIMARY KEY,
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     telefone VARCHAR(50),

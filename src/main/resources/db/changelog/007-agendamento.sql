@@ -2,9 +2,9 @@
 
 --changeset gabriel:007
 CREATE TABLE agendamento (
-    id INT PRIMARY KEY,
-    cliente_id INT NOT NULL,
-    profissional_id INT NOT NULL,
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    cliente_id BIGINT NOT NULL,
+    profissional_id BIGINT NOT NULL,
     inicio TIMESTAMP NOT NULL,
     fim TIMESTAMP NOT NULL,
     status VARCHAR(50) NOT NULL,

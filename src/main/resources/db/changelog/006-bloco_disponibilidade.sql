@@ -2,9 +2,9 @@
 
 --changeset gabriel:006
 CREATE TABLE bloco_disponibilidade (
-    id INT PRIMARY KEY,
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
     empresa_id BIGINT NOT NULL,
-    dia_disponivel_id INT NOT NULL,
+    dia_disponivel_id BIGINT NOT NULL,
     inicio TIMESTAMP NOT NULL,
     fim TIMESTAMP NOT NULL,
     CONSTRAINT fk_bloco_empresa FOREIGN KEY (empresa_id) REFERENCES empresa(id),

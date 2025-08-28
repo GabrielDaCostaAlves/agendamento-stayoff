@@ -2,7 +2,7 @@
 
 --changeset gabriel:002
 CREATE TABLE cliente (
-    id INT PRIMARY KEY,
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
     empresa_id BIGINT NOT NULL,
     nome VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,

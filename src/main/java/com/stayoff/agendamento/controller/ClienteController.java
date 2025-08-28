@@ -5,6 +5,7 @@ import com.stayoff.agendamento.dto.resposta.ClienteResponseDTO;
 import com.stayoff.agendamento.dto.paged.ClientePagedDTO;
 import com.stayoff.agendamento.model.Empresa;
 import com.stayoff.agendamento.service.ClienteService;
+import com.stayoff.agendamento.service.EmpresaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +15,12 @@ import org.springframework.web.bind.annotation.*;
 public class ClienteController {
 
     private final ClienteService clienteService;
+    private final EmpresaService empresaService; // 1️⃣ adicionar aqui
 
-    public ClienteController(ClienteService clienteService) {
+
+    public ClienteController(ClienteService clienteService, EmpresaService empresaService) {
         this.clienteService = clienteService;
+        this.empresaService = empresaService;
     }
 
     @GetMapping
@@ -36,7 +40,9 @@ public class ClienteController {
 
     @PostMapping
     public ResponseEntity<ClienteResponseDTO> createCliente(@RequestBody ClienteDTO dto,
-                                                            @RequestAttribute Empresa empresa) {
+                                                            @RequestParam Long empresaId) {
+
+        Empresa empresa = empresaService.findEmpresaById(empresaId);
         ClienteResponseDTO created = clienteService.save(dto, empresa);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
